@@ -1,0 +1,973 @@
+
+<div class="" (window:resize)="isMobile($event)">
+  	<app-sidebar
+  	*ngIf="isloogedin()"
+    [ngClass]="{ 'sidenav fixed-left': isMobileResolution === false }"
+	  ></app-sidebar>
+	  
+ 	<div class="main-content">
+    	<!-- Top navbar -->
+		<app-navbar *ngIf="isloogedin()"></app-navbar>
+		<nav *ngIf="!isloogedin()"
+  id="navbar-main"
+  class="navbar navbar-horizontal navbar-transparent navbar-main navbar-expand-lg navbar-light"
+>
+  <div class="container">
+	<a class="navbar-brand" [routerLink]="['/']">
+	  <img src="assets/images/grow-logo-white.svg" style="height: 150px; width: 150px;"/>
+	</a>
+	<button
+	  class="navbar-toggler"
+	  type="button"
+	  data-toggle="collapse"
+	  data-target="#navbar-collapse"
+	  aria-expanded="false"
+	  aria-label="Toggle navigation"
+	  (click)="isCollapsed = !isCollapsed"
+	  [attr.aria-expanded]="!isCollapsed" aria-controls="collapseBasic"
+	>
+	  <span class="navbar-toggler-icon"></span>
+	</button>
+	<div
+	  class="navbar-collapse navbar-custom-collapse collapse"
+	  id="collapseBasic" 
+	>
+	  <div class="navbar-collapse-header">
+		<div class="row">
+		  <div class="col-6 collapse-brand">
+			<a [routerLink]="['/']">
+			  <img src="assets/images/logo.png" />
+			</a>
+		  </div>
+		  <div class="col-6 collapse-close">
+			<button
+			  type="button"
+			  class="navbar-toggler"
+			  data-toggle="collapse"
+			  data-target="#navbar-collapse"
+			  aria-controls="navbar-collapse"
+			  aria-expanded="false"
+			  aria-label="Toggle navigation"
+			  (click)="isCollapsed = !isCollapsed"
+			>
+			  <span></span> <span></span>
+			</button>
+		  </div>
+		</div>
+	  </div>
+	  <hr class="d-lg-none" />
+	  <ul class="navbar-nav align-items-lg-center ml-lg-auto">
+		<li class="nav-item">
+		  <a
+			class="nav-link nav-link-icon"
+			href="https://www.linkedin.com/company/growfinance/?originalSubdomain=au"
+			target="_blank"
+			data-toggle="tooltip"
+			data-original-title="Follow us on Linkedin"
+		  >
+			<i class="fab fa-linkedin"></i>
+			<span class="nav-link-inner--text d-lg-none">Linkedin</span>
+		  </a>
+		</li>
+		
+		<li class="nav-item d-none d-lg-block ml-lg-4">
+		  <a
+			href="tel:1300001420"
+			target="_blank"
+			class="btn btn-neutral btn-icon"
+		  >
+			<span class="btn-inner--icon text-grow">
+			  <i class="fas fa-phone-square mr-2"></i>
+			</span>
+			<span class="nav-link-inner--text text-grow">1300 001 420</span>
+		  </a>
+		</li>
+	  </ul>
+	</div>
+  </div>
+</nav>
+		<!-- start accreditation page content -->
+		<div class="accreditation-container">
+			<!-- <div class="page-header" *ngIf="!isloogedin()">
+				<div class="logo">
+					<img src="assets/images/grow-logo-white.png" class="img-fluid" />
+				</div>
+			</div> -->
+			<div class="">
+				<div class="" [ngClass]="isloogedin()?'header bg-grow pb-6':'header py-7 py-lg-8 pt-lg-9'"> 
+				  	<div class="" [ngClass]="isloogedin()?'container-fluid col-md-10':'container-fluid'">
+					    <div class="header-body"> 
+					      <div class="" [ngClass]="isloogedin()?'row align-items-center py-4':'row justify-content-center text-center'">
+					        <div class=" col-lg-6 col-7">
+					          <h6 class="h2 text-white d-inline-block mb-0">{{pageData.title}}</h6>
+					        </div>
+					      </div>
+					    </div>
+				  	</div>
+				</div>
+				<div class="cardBackground">
+				<div class="" [ngClass]="isloogedin()?'container-fluid mt--6 col-md-10':'container-fluid mt--6'">
+					<div class="row justify-content-center">
+						<div class="" [ngClass]="isloogedin()?'col-lg-12':'col-lg-5 col-md-7'">
+				    <div class="card mb-4">
+				    	<div class="card-body">
+							<div class="form">
+								<div class="form-body ">
+									<div class="">
+										<div class="row">
+											<div class="col-md-12">
+												<app-alert [alerts]=formAlert [dismissible]="true"></app-alert>
+											</div>
+										</div>
+										
+										<div class="row">
+											<div class="col-md-12" [formGroup]="accreditationForm">
+												<!-- form step 1 -->
+												<div class="form-step" [ngClass]="{'show': currentStep == 1, 'hide': currentStep != 1}" >
+													<div class="" [ngClass]="isloogedin()?'':'company-details-section text-center'">
+														<div class="row align-items-center">
+															<div class="col-md-8 col-xl-12">
+																<div class="form-group">
+																	<label class="form-control-label text-grow font-weight-bold mb-3">Please search your company name:</label>
+																	<ng-select 
+																		class="form-control"
+															           	placeholder='Search Company Name' 
+																		formControlName='companyName'
+																		autocomplete='off'
+															           	bindLabel='organisationName'
+															           	bindValue='organisationName'
+															           	[clearable]='true'
+															           	(change)='onSelectEntityOrgSearchItem($event, accreditationForm.get("companyName"))'
+															           	[clearSearchOnAdd]='true'
+															           	[loading]='searchingOrgList'
+															           	[typeahead]='typeaheadOrgList'
+															           	clearAllText='Clear'
+															           	>
+															            <ng-option [value]="org" *ngFor="let org of orgList" [disabled]="org.description && org.description=='keeptyping'">
+															            	{{ (org.description && org.description=='keeptyping') ? 'Keep Typing...': org.organisationName +' (ABN: '+ org.abn+')' }}
+															            </ng-option>
+																    </ng-select>
+																    <div *ngIf="isControlInvalid(accreditationForm.get('companyName')) == true" class="invalid-feedback">
+															            <div class="help text-danger" *ngIf="accreditationForm.get('companyName').errors.required">
+															              Company name is required.
+															            </div>
+															        </div>
+																</div>
+															</div>
+														</div>
+														<div class="row" >
+															<div class="col-md-8 col-xl-12">
+																<!-- <button *ngIf="currentStep < totalSteps-1" class="pull-right btn grow-btn-primary text-white font-weight-bold text-uppercase mt-4 mb-3" (click)="gotoThisStep(currentStep+1);generateApplicantNumber()">Next</button> -->
+															</div>
+														</div>
+													</div>
+												</div>
+												
+												<div clas="col-md-12" *ngIf="currentStep==2||currentStep==3||currentStep==4||currentStep==5">
+													<h2  class="card-title text-muted mb-0"  >Application Reference Number: <strong>{{applicantNumber}}</strong></h2>
+													<div class="mt-2">
+														<p>
+															<ngb-progressbar [showValue]="false" [value]="progressbarValue"></ngb-progressbar>
+														</p>
+													</div>
+												
+												</div>
+												<!-- form step 2 -->
+												<div class="row">
+													<div class="col-md-12">
+													
+												<div class="form-step" [ngClass]="{'show': currentStep == 2, 'hide': currentStep != 2}" >
+													
+													<div class="company-details-section">
+														<h2 class="text-grow section-heading">Company Details</h2>
+														<div class="control-container">
+															<h2 class="control-group-heading text-muted">Understanding your company</h2>
+															<div class=" form-group row">
+																<div class=" col-md-8 col-xl-12">
+																	<label class="form-control-label" for="">Nature of business <span>*</span></label>
+																	<select type="text" class="form-control" formControlName="natureofBusiness">
+																		<option></option>
+																		<option value="financebroker">Finance Broker</option>
+																		<option value="supplier/vendor">Supplier/Vendor</option>
+																	</select>
+																	<div *ngIf="isControlInvalid(accreditationForm.get('natureofBusiness'))" class="invalid-feedback">
+															            <div class="help text-danger" *ngIf="accreditationForm.get('natureofBusiness').errors.required">
+															              Please indicate nature of your Business.
+															            </div>
+															        </div>
+															    </div>
+															</div>
+															
+															<div class="form-group row">
+																<div class=" col-md-8 col-xl-12">
+																<label for="entityType" class="form-control-label">Entity Type <span>*</span></label>
+																<select id="entityType" name="entityType" class="form-control" formControlName="entityType">
+																	<option *ngFor="let type of entityType" [value]="type">{{type}}</option>
+																</select>
+															  <div *ngIf="isControlInvalid(accreditationForm.get('entityType'))" class="invalid-feedback">
+																  <div class="help text-danger" *ngIf="accreditationForm.get('entityType').errors.required">Entity Type is required</div>
+															   </div>
+															</div>
+														  </div>
+														</div>
+														<hr>
+														<div class="control-container">
+															<h5 class="control-group-heading text-muted">Company details and address</h5>
+															<div class=" row form-group">
+																<div [class]=" formControlSizeClass">
+																	<label class="form-control-label" for="">ABN <span>*</span></label>
+																	<input type="text" class="form-control" formControlName="abn" />
+																	<div *ngIf="isControlInvalid(accreditationForm.get('abn'))" class="invalid-feedback">
+															            <div class="help text-danger" *ngIf="accreditationForm.get('abn').errors.required">
+															              Please provide the company ABN.
+															            </div>
+															            <div class="help text-danger" *ngIf="accreditationForm.get('abn').errors.isValid || accreditationForm.get('abn').errors.pattern">
+															              Please enter your ABN number in the format 99999999999 and without spaces or punctuation.
+															            </div>
+															        </div>
+															    </div>
+															</div>
+															<div class="form-group row">
+																<div [class]="formControlSizeClass">
+																	<label class="form-control-label" for="">Entity name <span>*</span></label>
+																	<input class="form-control" type="text" formControlName="entityName">
+																	<div *ngIf="isControlInvalid(accreditationForm.get('entityName'))" class="invalid-feedback">
+															            <div class="help text-danger" *ngIf="accreditationForm.get('entityName').errors.required">
+															              Please provide the entity name.
+															            </div>
+															        </div>
+																</div>
+															</div>
+															<div class="form-group row">
+																<div [class]="formControlSizeClass">
+																	<label class="form-control-label" for="">ACN <span>*</span></label>
+																	<input class="form-control" type="text" formControlName="acn">
+																	<div *ngIf="isControlInvalid(accreditationForm.get('acn'))" class="invalid-feedback">
+															            <div class="help text-danger" *ngIf="accreditationForm.get('acn').errors.required">
+															              Please provide the company ACN.
+																		</div>
+																		<div class="help text-danger" *ngIf="accreditationForm.get('acn').errors.isValid || accreditationForm.get('acn').errors.pattern">
+																			Please enter your ABN number in the format 999999999 and without spaces or punctuation.
+																		  </div>
+															        </div>
+																</div>
+															</div>
+														</div>
+														<hr>
+														<div class="control-container">
+															<div class="form-group row">
+																<div [class]="formControlSizeClass">
+																    <app-grow-address label="Business address" [formGroup]="accreditationForm.get('businessAddress')" labelId="businessAddressAccreditation"></app-grow-address>
+																	<div *ngIf="isControlInvalid(accreditationForm.get('businessAddress').get('RawAddress'))" class="invalid-feedback">
+															            <div class="help text-danger" *ngIf="accreditationForm.get('businessAddress').get('RawAddress').errors.required">
+															              Please provide a business address with street, region, postcode etc.
+																		</div>
+																		<!-- <div class="help text-danger" *ngIf="accreditationForm.get('businessAddress').get('RawAddress').errors == null && accreditationForm.get('businessAddress').invalid">
+																			Please provide proper address with street, region, postcode etc.
+																		</div> -->
+															        </div>
+															    </div>
+															</div>
+														</div>
+														<hr>
+														<div class="control-container">
+															<div class="form-group">
+																<label class="form-control-label">Have you ever held an accreditation with Grow Finance? <span>*</span></label>
+																<div>
+																	<label class=" custom-toggle custom-toggle-success color-grow mr-1">
+																		<input formControlName="heldAccreditationBefore" checked="checked" type="checkbox" />
+														                <span
+														                  class=" custom-toggle-slider rounded-circle"
+														                  data-label-off="No"
+														                  data-label-on="Yes"
+														                >
+														                </span>
+														            </label>
+														          	<div *ngIf="isControlInvalid(accreditationForm.get('heldAccreditationBefore'))" class="invalid-feedback">
+															            <div class="help text-danger" *ngIf="accreditationForm.get('heldAccreditationBefore').errors.required">
+															              Please indicate whether you have ever held an accreditation with Grow Finance.
+															            </div>
+															        </div>
+														        </div>
+															</div>
+															<div class="form-group row " *ngIf="accreditationForm.get('growbizAccreditationId')">
+																<div [class]="formControlSizeClass">
+																	<label class="form-control-label">Please provide Grow Finance ID below or firm name if unknown.<span>*</span></label>
+																	<input class="form-control" type="text" formControlName="growbizAccreditationId">
+																	<div *ngIf="isControlInvalid(accreditationForm.get('growbizAccreditationId'))" class="invalid-feedback">
+															            <div class="help text-danger" *ngIf="accreditationForm.get('growbizAccreditationId').errors.required">
+															              Please provide the Grow Finance ID or firm name.
+															            </div>
+															        </div>
+															    </div>
+															</div>
+														</div>
+														<hr>
+														<div class="control-container">
+															<div class="form-group">
+																<label class="form-control-label">Are you part of a group or aggregator? <span>*</span></label>
+																<div>
+																	<label class=" custom-toggle custom-toggle-success color-grow mr-1">
+																		<input formControlName="ispartOfgroupOrAggregator" checked="checked" type="checkbox" />
+														                <span
+														                  class=" custom-toggle-slider rounded-circle"
+														                  data-label-off="No"
+														                  data-label-on="Yes"
+														                >
+														                </span>
+														            </label>
+														          	<div *ngIf="isControlInvalid(accreditationForm.get('ispartOfgroupOrAggregator'))" class="invalid-feedback">
+															            <div class="help text-danger" *ngIf="accreditationForm.get('ispartOfgroupOrAggregator').errors.required">
+															              Please indicate whether your company is part of a group or aggregator.
+															            </div>
+															        </div>
+														        </div>
+															</div>
+															<div class="form-group row" *ngIf="accreditationForm.get('groupOrAggregatorName')">
+																<div [class]="formControlSizeClass">
+																	<label class="form-control-label" for="">Group or Aggregator <span>*</span></label>
+																	<!-- <input type="text" class="form-control" formControlName="groupOrAggregatorName"> -->
+																	<ng-select 
+																		class="form-control"
+															           	placeholder='Search Aggregator Name' 
+																		formControlName='groupOrAggregatorName'
+																		autocomplete='off'
+															           	bindLabel='EntityName'
+															           	bindValue='EntityName'
+															           	[clearable]='true'
+															           	(change)='onSelectAggregatorSearchItem($event, accreditationForm.get("groupOrAggregatorName"))'
+															           	[clearSearchOnAdd]='true'
+															           	[loading]='searchingAggregator'
+															           	[typeahead]='typeaheadAggregatorList'
+															           	clearAllText='Clear'
+															           	>
+															            <ng-option [value]="org" *ngFor="let org of aggregatorList" [disabled]="org.description && org.description=='keeptyping'">
+															            	{{ (org.description && org.description=='keeptyping') ? 'Keep Typing...': org.EntityName +' (ABN: '+ org.ABN+')' }}
+															            </ng-option>
+																    </ng-select>
+																    <!-- <div *ngIf="isControlInvalid(accreditationForm.get('companyName')) == true && validateStep1 == true" class="invalid-feedback">
+															            <div class="help text-danger" *ngIf="accreditationForm.get('companyName').errors.required">
+															              Company name is required.
+															            </div>
+															        </div> -->
+																	<div *ngIf="isControlInvalid(accreditationForm.get('groupOrAggregatorName'))" class="invalid-feedback">
+															            <div class="help text-danger" *ngIf="accreditationForm.get('groupOrAggregatorName').errors.required">
+															              Please provide the name of the group or aggregator.
+															            </div>
+															        </div>
+															    </div>
+															</div>
+														</div>
+														<hr>
+
+														<div class="control-container">
+															<h5 class="control-group-heading text-muted">Contact details</h5>
+															<div class="form-group row">
+																<div [class]="formControlSizeClass">
+																	<label class="form-control-label" for="">Office number <span>*</span></label>
+																	<input type="text" class="form-control" formControlName="officeNumber" mask="(00) 0000 0000" [showMaskTyped]="true">
+																	<div *ngIf="isControlInvalid(accreditationForm.get('officeNumber'))" class="invalid-feedback">
+															            <div class="help text-danger" *ngIf="accreditationForm.get('officeNumber').errors.required">
+															              Office number is required.
+															            </div>
+															        </div>
+															    </div>
+															</div>
+														</div>
+													
+													</div>
+												</div>
+													
+											</div>
+										</div>
+												<!-- form step 3 -->
+													<div class="form-step" [ngClass]="{'show': currentStep == 3, 'hide': currentStep != 3}">
+													<div class="introducer-details-section">
+														<div class="row">
+															<div [class]="formControlSizeClass">
+																<h2 class="section-heading text-grow">Introducer Details</h2>
+																<p>
+																	This refers to the applicant who is interested in becoming accredited as an Introducer with Grow Finance.
+																</p>
+																<p>IMPORTANT: The details you enter must match the detail shown on your Australian Drivers Licence or Passport.
+																</p>
+															</div>
+														</div>
+														<div class="control-container">
+															<div class=" row">
+																<div [class]="formControlSizeClass + ' form-group'">
+																	<label class="form-control-label">Upload Driving licence <span>*</span></label>
+																	<p>Please take a picture of the front of your driver licence with light background and make sure the photo is well-lit, we will parse your details from it </p>
+																	<input class="form-control" type="file" accept="image/*" (change)="handleFileUpload($event, accreditationForm.get('driverLicence'))">
+																	<div class="text-primary" *ngIf="proceedingDriverLicence"> Proceeding please wait <i class="fas fa-spinner"></i>
+																	</div>
+																	<div class="text-danger" *ngIf="driverLicenceApiError"> Internal Error
+																	</div>
+																	<div *ngIf="isControlInvalid(accreditationForm.get('driverLicence'))" class="invalid-feedback">
+																		<div class="help text-danger" *ngIf="accreditationForm.get('driverLicence').errors.required">
+															              Driver licence is required
+															            </div>
+															            <div class="help text-danger" *ngIf="accreditationForm.get('driverLicence').errors.invalidImage">
+															              Could not parse the content from the driver license, please enter your information manually
+															            </div>
+															        </div>
+																</div>
+															</div>
+															<div class="form-group">
+																<div class="row">
+																	<div class="col-md-4 mt-4" *ngIf="accreditationForm.get('driverLicence').value != null">
+																		<a download="licence.png" [href]="accreditationForm.get('driverLicence').value">
+																		<img class="img-responsive uploaded-driver-licence" [src]="accreditationForm.get('driverLicence').value">
+																		</a>
+																	</div>
+																</div>
+															</div>
+
+															<!-- <div class="row"> -->
+																<div class="form-group row">
+																	<div [class]="formControlSizeClass">
+																		<label class="form-control-label" for="">Title  <span>*</span></label>
+
+																		<select class="form-control" formControlName="title">
+																			<option value="Mr">Mr</option>
+																			<option value="Mrs">Mrs</option>
+																			<option value="Ms">Ms</option>
+																			<option value="Miss">Miss</option>
+																		</select>
+																		<div *ngIf="isControlInvalid(accreditationForm.get('title'))" class="invalid-feedback">
+																            <div class="help text-danger" *ngIf="accreditationForm.get('title').errors.required">
+																              Please choose your title.
+																            </div>
+																        </div>
+																    </div>
+																</div>
+																<div class="form-group row">
+																	<div [class]="formControlSizeClass">
+																		<label class="form-control-label" for="">Given name <span>*</span></label>
+																		<input class="form-control" type="text" formControlName="givenName">
+																		<div *ngIf="isControlInvalid(accreditationForm.get('givenName'))" class="invalid-feedback">
+																            <div class="help text-danger" *ngIf="accreditationForm.get('givenName').errors.required">
+																              Please provide your given name.
+																            </div>
+																        </div>
+																    </div>
+																</div>
+															<!-- </div>
+															<div class="row"> -->
+																<div class="form-group row">
+																	<div [class]="formControlSizeClass">
+																		<label class="form-control-label" for="">Middle name</label>
+																		<input class="form-control" type="text" formControlName="middlename">
+																	</div>
+																</div>
+																<div class="form-group row">
+																	<div [class]="formControlSizeClass">
+																		<label class="form-control-label" for="">Surname <span>*</span></label>
+																		<input class="form-control" type="text" formControlName="surName">
+																		<div *ngIf="isControlInvalid(accreditationForm.get('surName'))" class="invalid-feedback">
+																            <div class="help text-danger" *ngIf="accreditationForm.get('surName').errors.required">
+																              Please provide your surname.
+																            </div>
+																        </div>
+																    </div>
+																</div>
+															
+																<div class="form-group row">
+																	<div [class]="formControlSizeClass">
+																		<label class="form-control-label" for="">Preferred name</label>
+																		<input class="form-control" type="text" formControlName="preferredName">
+																	</div>
+																</div>
+
+																<div class="form-group">
+																	<label class="form-control-label">Have you ever been known by another name/s? <span>*</span></label>
+																	<div>
+																		<label class=" custom-toggle custom-toggle-success color-grow mr-1">
+																			<input formControlName="hasAnotherName" checked="checked" type="checkbox" />
+															                <span
+															                  class=" custom-toggle-slider rounded-circle"
+															                  data-label-off="No"
+															                  data-label-on="Yes"
+															                >
+															                </span>
+															            </label>
+															          	<div *ngIf="isControlInvalid(accreditationForm.get('hasAnotherName'))" class="invalid-feedback">
+																            <div class="help text-danger" *ngIf="accreditationForm.get('hasAnotherName').errors.required">
+																              Please indicate whether you have another name/s.
+																            </div>
+																        </div>
+															        </div>
+																</div>
+																<div class="form-group row" *ngIf="accreditationForm.get('otherNames')">
+																	<div [class]="formControlSizeClass">
+																		<label class="form-control-label" for="">Other name/s <span>*</span></label>
+																		<input class="form-control" type="text" formControlName="otherNames">
+																		<div *ngIf="isControlInvalid(accreditationForm.get('otherNames'))" class="invalid-feedback">
+																            <div class="help text-danger" *ngIf="accreditationForm.get('otherNames').errors.required">
+																              Other name/s is required.
+																            </div>
+																        </div>
+																    </div>
+																</div>
+														</div>
+														<hr>
+														<div class="control-container">
+															<div class="row form-group">
+																
+																<div [class]="formControlSizeClass" *ngIf="isDesktopDevice">
+																	<label class="form-control-label" for="">Date of birth <span>*</span></label>
+																	<div class="input-group">
+																		<div class="input-group-prepend">
+																        	<span class="input-group-text">
+																        		<i class="fa fa-calendar"></i>
+																        	</span>
+																        </div>
+																		<input 
+																			class="form-control" 
+																			#dobpicker="bsDatepicker"
+																			type="text"
+																           	bsDatepicker
+					           												[bsConfig]="bsDateConfiguration"
+					           												[minDate]="minDate"
+					           												[maxDate]="maxDate"
+					           												aria-label="Large"
+					           												aria-describedby="inputGroup-sizing-sm"
+					           												formControlName="dob"
+					           												>
+					           										</div>
+															        <div *ngIf="isControlInvalid(accreditationForm.get('dob'))" class="invalid-feedback">
+															            <div class="help text-danger" *ngIf="accreditationForm.get('dob').errors.required">
+															              Please provide date of birth
+															            </div>
+															        </div>
+															    </div>
+
+																<div [class]="formControlSizeClass+ 'form-group'" *ngIf="!isDesktopDevice">
+																	<label class="form-control-label" for="">Date of birth <span>*</span></label>
+																	<div class="input-group">
+																		<div class="input-group-prepend">
+																        	<span class="input-group-text">
+																        		<i class="fa fa-calendar"></i>
+																        	</span>
+																        </div>
+																	  	<input 
+																	  		class="form-control rolldatepicker" 
+																			type="text"
+																			id="dobRollDatepicker"
+					           												aria-label="Large"
+					           												aria-describedby="inputGroup-sizing-sm"
+					           												formControlName="dob"
+					           												(click)="openRollDatePicker('dobRollDatepicker', accreditationForm.get('dob'))"
+					           												>
+					           											<div *ngIf="isControlInvalid(accreditationForm.get('dob'))" class="invalid-feedback">
+																            <div class="help text-danger" *ngIf="accreditationForm.get('dob').errors.required">
+																              Please provide date of birth
+																            </div>
+																        </div>
+					           										</div>
+																</div>
+															</div>
+														</div>
+														<hr>
+														<div class="control-container">
+															<div class="form-group row">
+																<div [class]="formControlSizeClass">
+																	<label class="form-control-label" for="">Mobile <span>*</span></label>
+																	<input class="form-control" type="text" formControlName="mobileNumber" [textMask]="{mask: mobilenumberMask, showMask: true, guid: true,keepCharPositions: false, conformedValue:'04xx xxx xxx'}">
+																	<div *ngIf="isControlInvalid(accreditationForm.get('mobileNumber'))" class="invalid-feedback">
+															            <div class="help text-danger" *ngIf="accreditationForm.get('mobileNumber').errors.required">
+															              Please provide your mobile number
+															            </div>
+															        </div>
+																</div>
+															</div>
+															<div class="row form-group">
+																<div [class]="formControlSizeClass">
+																	<label class="form-control-label" for="">Email address <span>*</span></label>
+																	<input type="text" class="form-control" formControlName="email">
+																	<div *ngIf="isControlInvalid(accreditationForm.get('email'))" class="invalid-feedback">
+															            <div class="help text-danger" *ngIf="accreditationForm.get('email').errors.required">
+															              Please provide your email address.
+															            </div>
+															            <div class="help text-danger" *ngIf="accreditationForm.get('email').errors.email">
+															              Enter a valid email address e.g. name@example.com.
+															            </div>
+															        </div>
+															    </div>
+															</div>
+															<div class="form-group row">
+																<div [class]="formControlSizeClass">
+																	<app-grow-address label="Residential address" [formGroup]="accreditationForm.get('residentialAddress')" labelId="residentialAddressAccreditation"></app-grow-address>
+																	<div *ngIf="isControlInvalid(accreditationForm.get('residentialAddress').get('RawAddress'))" class="invalid-feedback">
+															            <div class="help text-danger" *ngIf="accreditationForm.get('residentialAddress').get('RawAddress').errors.required">
+															              Please provide a Residential address.
+															            </div>
+															        </div>
+															    </div>
+															</div>
+														</div>
+														<hr>
+														<div class="control-container">
+															
+															<div class="form-group row">
+																<div [class]="formControlSizeClass">
+																	<label class="form-control-label" for="">Driver's licence number <span>*</span></label>
+																	<input type="text" class="form-control" formControlName="driverLicenceNumber">
+																	<div *ngIf="isControlInvalid(accreditationForm.get('driverLicenceNumber'))" class="invalid-feedback">
+															            <div class="help text-danger" *ngIf="accreditationForm.get('driverLicenceNumber').errors.required">
+															              Driver Licence Number is required.
+															            </div>
+															        </div>
+																</div>
+															</div>
+															<div class="form-group row">
+																<div [class]="formControlSizeClass">
+																	<label class="form-control-label">Issuing state <span>*</span></label>
+																	<select class="form-control" formControlName="driverLicenceIssuingState">
+																		<option></option>
+																		<option *ngFor="let state of drLicenceStateList" [value]="state">{{state}}</option>
+																	</select>
+																	<div *ngIf="isControlInvalid(accreditationForm.get('driverLicenceIssuingState'))" class="invalid-feedback">
+															            <div class="help text-danger" *ngIf="accreditationForm.get('driverLicenceIssuingState').errors.required">
+															              Issuing state is required.
+															            </div>
+															        </div>
+																</div>
+															</div>
+															<div class="form-group row">
+																<div [class]="formControlSizeClass" *ngIf="isDesktopDevice">
+																	<label class="form-control-label" for="">Expiry date <span>*</span></label>
+																	<div class="input-group">
+																		<div class="input-group-prepend">
+																        	<span class="input-group-text">
+																        		<i class="fa fa-calendar"></i>
+																        	</span>
+																        </div>
+																	  	<input 
+																	  		class="form-control" 
+																			#dleDate="bsDatepicker"
+																			type="text"
+																           	bsDatepicker
+					           												[bsConfig]="bsDateConfiguration"
+					           												aria-label="Large"
+					           												aria-describedby="inputGroup-sizing-sm"
+					           												formControlName="driverLicenceExpiryDate"
+					           												>
+																    </div>
+																	<div *ngIf="isControlInvalid(accreditationForm.get('driverLicenceExpiryDate'))" class="invalid-feedback">
+															            <div class="help text-danger" *ngIf="accreditationForm.get('driverLicenceExpiryDate').errors.required">
+															              Expiry date is required.
+															            </div>
+															        </div>
+																</div>
+																<div [class]="formControlSizeClass" *ngIf="!isDesktopDevice">
+																  	<label class="form-control-label" for="">Expiry date <span>*</span></label>
+																  	<div class="input-group">
+																	  	<div class="input-group-prepend">
+																        	<span class="input-group-text">
+																        		<i class="fa fa-calendar"></i>
+																        	</span>
+																        </div>
+																	  	<input 
+																	  		class="form-control rolldatepicker" 
+																			type="text"
+																			id="dleRollDatepicker"
+					           												aria-label="Large"
+					           												aria-describedby="inputGroup-sizing-sm"
+					           												formControlName="driverLicenceExpiryDate"
+					           												(click)="openRollDatePicker('dleRollDatepicker', accreditationForm.get('driverLicenceExpiryDate'))"
+					           												>
+					           										</div>
+																	<div *ngIf="isControlInvalid(accreditationForm.get('driverLicenceExpiryDate'))" class="invalid-feedback">
+															            <div class="help text-danger" *ngIf="accreditationForm.get('driverLicenceExpiryDate').errors.required">
+															              Expiry date is required.
+															            </div>
+															        </div>
+																</div>
+															</div>
+														</div>
+													</div>
+													
+													</div>
+															<!-- form step 4 -->
+													<div class="form-step" [ngClass]="{'show': currentStep == 4, 'hide': currentStep != 4}">
+													<div class="credit-licence-section">
+														<h2 class="text-grow section-heading">Credit Licence Details</h2>
+														<div class="control-container">
+															<div class="form-group">
+																<div class="row">
+														          	<div [class]="formControlSizeClass">
+																		<label class="form-control-label">Do you hold an Australian Credit Licence in your own right? <span>*</span></label>
+																		<div>
+															          		<label class=" color-grow custom-toggle custom-toggle-success mr-1">
+																                <input formControlName="hasAustralianCreditLicence" checked="checked" type="checkbox" />
+																                <span
+																                  class=" custom-toggle-slider rounded-circle"
+																                  data-label-off="No"
+																                  data-label-on="Yes"
+																                >
+																                </span>
+																            </label>
+																        </div>
+															          	<div *ngIf="isControlInvalid(accreditationForm.get('hasAustralianCreditLicence'))" class="invalid-feedback">
+																            <div class="help text-danger" *ngIf="accreditationForm.get('hasAustralianCreditLicence').errors.required">
+																              Please indicate whether you hold an Australian Credit Licence.
+																            </div>
+																        </div>
+														          	</div>
+														        </div>
+													        </div>
+													        <div *ngIf="accreditationForm.get('australianCreditLicenceNumber')">
+																<div class="form-group row">
+																	<div [class]="formControlSizeClass">
+																		<label class="form-control-label" for="">Please provide your Australian Credit Licence number. <span>*</span></label>
+																		<input type="text" class="form-control" formControlName="australianCreditLicenceNumber">
+																		<div *ngIf="isControlInvalid(accreditationForm.get('australianCreditLicenceNumber'))" class="invalid-feedback">
+																            <div class="help text-danger" *ngIf="accreditationForm.get('australianCreditLicenceNumber').errors.required">
+																              Please provide your Australian Credit Licence number.
+																            </div>
+																        </div>
+																    </div>
+																</div>
+															</div>
+															<div class="form-group" *ngIf="accreditationForm.get('dirORemployeeOfLicenceEntity')">
+																<label class="form-control-label">Are you a director/employee of a licensed entity? <span>*</span></label>
+																<div class="form-group row">
+																	<div class="col-md-4 input-group">
+																		<label class="color-grow custom-toggle custom-toggle-success mr-1">
+															                <input formControlName="dirORemployeeOfLicenceEntity" checked="checked" type="checkbox" />
+															                <span
+															                  class=" custom-toggle-slider rounded-circle"
+															                  data-label-off="No"
+															                  data-label-on="Yes"
+															                >
+															                </span>
+															            </label>
+															          	<div *ngIf="isControlInvalid(accreditationForm.get('dirORemployeeOfLicenceEntity'))" class="invalid-feedback">
+																            <div class="help text-danger" *ngIf="accreditationForm.get('dirORemployeeOfLicenceEntity').errors.required">
+																              Please indicate whether you are a director or employee of a licensed entity.
+																            </div>
+																        </div>
+																	</div>
+																</div>
+															</div>
+															<div *ngIf="accreditationForm.get('hasACRN')">
+																<div class="form-group">
+																	<div class="row">
+																		<div [class]="formControlSizeClass">
+																		<label class="form-control-label">Do you hold an Australian Credit Representative Number? <span>*</span></label>
+																		<div>
+																			<label class="color-grow custom-toggle custom-toggle-success mr-1">
+																                <input formControlName="hasACRN" checked="checked" type="checkbox" />
+																                <span
+																                  class=" custom-toggle-slider rounded-circle"
+																                  data-label-off="No"
+																                  data-label-on="Yes"
+																                >
+																                </span>
+																            </label>
+																        </div>
+																			<div *ngIf="isControlInvalid(accreditationForm.get('hasACRN'))" class="invalid-feedback">
+																	            <div class="help text-danger" *ngIf="accreditationForm.get('hasACRN').errors.required">
+																	              Please indicate whether you hold an Australian Credit Representative number.
+																	            </div>
+																	        </div>
+																    	</div>
+																    </div>
+																</div>
+															</div>
+															<div *ngIf="accreditationForm.get('ACRN')">
+																<div class="form-group row">
+																	<div [class]="formControlSizeClass">
+																		<label class="form-control-label" for="">Please provide your Australian Credit Representive number. <span>*</span></label>
+																		<div class="input-group ">
+																			<input type="text" class="form-control" formControlName="ACRN">
+																			<div *ngIf="isControlInvalid(accreditationForm.get('ACRN'))" class="invalid-feedback">
+																	            <div class="help text-danger" *ngIf="accreditationForm.get('ACRN').errors.required">
+																	              Please provide your Australian Credit Representive number.
+																	            </div>
+																	        </div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											
+												<!-- form step 5 -->
+													<div class="form-step" [ngClass]="{'show': currentStep == 5, 'hide': currentStep != 5}">
+													<div class="introducer-acknowledgements-section">
+														<h2 class="section-heading text-grow">Introducer Acknowledgements</h2>
+														<div class="control-container">
+															<div class="form-group">
+																<div class="row">
+																	<div [class]="formControlSizeClass">
+																		<label class="form-control-label">Have you ever been declared bankrupt or subject to a Part 9 or 10 debt arrangement? <span>*</span></label>
+																		<div>
+																			<label class="color-grow custom-toggle custom-toggle-success mr-1">
+																                <input formControlName="declaredBankrupt" checked="checked" type="checkbox" />
+																                <span
+																                  class=" custom-toggle-slider rounded-circle"
+																                  data-label-off="No"
+																                  data-label-on="Yes"
+																                >
+																                </span>
+																            </label>
+																        </div>
+															          	<div *ngIf="isControlInvalid(accreditationForm.get('declaredBankrupt'))" class="invalid-feedback">
+																            <div class="help text-danger" *ngIf="accreditationForm.get('declaredBankrupt').errors.required">
+																              Please indicate whether you have ever been declared bankrupt or subject to a Part 9 or 10 debt arrangement.
+																            </div>
+																        </div>
+															        </div>
+															    </div>
+													    	</div>
+														</div>
+														<hr>
+														<div class="control-container">
+															<div class="form-group">
+																<div>
+																	<label class="form-control-label">Have you ever been refused accreditation with any other lender? <span>*</span></label>
+																	<div class="row">
+																		<div [class]="formControlSizeClass">
+																          	<label class="color-grow custom-toggle custom-toggle-success mr-1">
+																                <input formControlName="refusedAccreditation" checked="checked" type="checkbox" />
+																                <span
+																                  class=" custom-toggle-slider rounded-circle"
+																                  data-label-off="No"
+																                  data-label-on="Yes"
+																                >
+																                </span>
+																            </label>
+																        </div>
+															        </div>
+														          	<div *ngIf="isControlInvalid(accreditationForm.get('refusedAccreditation'))" class="invalid-feedback">
+															            <div class="help text-danger" *ngIf="accreditationForm.get('refusedAccreditation').errors.required">
+															            	Please indicate whether you have previously been refused accreditation.
+															            </div>
+															        </div>
+														        </div>
+														    </div>
+														</div>
+														<hr>
+														<div class="control-container">
+															<div class=" row form-group">
+																<div [class]="formControlSizeClass">
+																	<label class=" form-control-label">Have you ever been convicted of fraud or has any financial institution cancelled your accreditation? <span>*</span></label>
+																	<label class="color-grow custom-toggle custom-toggle-success mr-1">
+														                <input formControlName="convictedOfFraud" checked="checked" type="checkbox" />
+														                <span
+														                  class=" custom-toggle-slider rounded-circle"
+														                  data-label-off="No"
+														                  data-label-on="Yes"
+														                >
+														                </span>
+														            </label>
+														          	<div *ngIf="isControlInvalid(accreditationForm.get('convictedOfFraud'))" class="invalid-feedback">
+															            <div class="help text-danger" *ngIf="accreditationForm.get('convictedOfFraud').errors.required">
+															            	Please indicate whether you have ever been convicted of fraud or had your accreditation cancelled.
+															            </div>
+															        </div>
+														        </div>
+														    </div>
+														</div>
+														
+														<div class="control-container" *ngIf="accreditationForm.get('convictedOfFraudDetails')">
+															<div class="form-group row">
+																<div [class]="formControlSizeClass">
+																	<label class="form-control-label" for="">Where you have answered 'yes' above, please provide further detail <span>*</span></label>
+																	<textarea formControlName="convictedOfFraudDetails" class="form-control input-group"></textarea>
+																	<div *ngIf="isControlInvalid(accreditationForm.get('convictedOfFraudDetails'))" class="invalid-feedback">
+															            <div class="help text-danger" *ngIf="accreditationForm.get('convictedOfFraudDetails').errors.required">
+															            	Please provide further detail.
+															            </div>
+															        </div>
+															    </div>
+															</div>
+														</div>
+
+													</div>
+												</div>
+
+												<div class="row">
+													<div class="col-md-12">
+														<button *ngIf="currentStep > 1" class="btn btn-warning text-white mt-2 font-weight-bold  text-uppercase" id="backBtn" (click)="backStep(currentStep-1)">Back</button>
+														<button *ngIf="currentStep < totalSteps" class="pull-right btn grow-btn-primary text-white font-weight-bold text-uppercase mt-4 mb-3" (click)="gotoThisStep(currentStep+1);">Next</button>
+														<button  *ngIf="currentStep == totalSteps"class="btn btn-primary text-uppercase mt-2  " (click)="submitForm()">Submit</button>
+													</div>
+												</div>
+											</div>
+										</div><!-- End row -->
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				</div>
+				</div>
+			</div>
+			</div>
+		</div>
+
+		<!-- Confirmation modal for retrieved driver licence details  -->
+		<ng-template #confirmDetailsModal>
+		    <div class="modal-header">
+				<h4 class="modal-title" id="modal-title">Confirm below details</h4>
+			</div>
+			<div class="modal-body">
+				<p>Please verify your details and confirm</p>
+				<form [formGroup]="confirmationForm">
+					<div class="form-group">
+						<label class="form-control-label">First name</label>
+						<input type="text" formControlName="givenName" class="form-control">
+					</div>
+					<div class="form-group">
+						<label class="form-control-label">Middle name</label>
+						<input type="text" formControlName="middlename" class="form-control">
+					</div>
+					<div class="form-group">
+						<label class="form-control-label">Surname</label>
+						<input type="text" formControlName="surName" class="form-control">
+					</div>
+					<div class="form-group">
+						<label class="form-control-label">Date of birth</label>
+						<div class=" input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text">
+					        		<i class="fa fa-calendar"></i>
+					        	</span>
+					        </div>
+							<input 
+								class="form-control" 
+								#dobpicker="bsDatepicker"
+								type="text"
+					           	bsDatepicker
+								[bsConfig]="bsDateConfiguration"
+								[minDate]="minDate"
+								[maxDate]="maxDate"
+								aria-label="Large"
+								aria-describedby="inputGroup-sizing-sm"
+								formControlName="dob"
+								>
+					    </div>
+					</div>
+					<div class="form-group">
+						<app-grow-address label="Address" [formGroup]="confirmationForm.get('residentialAddress')" labelId="addressConfirmAccreditation"></app-grow-address>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<div class="col-md-6 text-left">
+					<button type="button" class="btn btn-success" (click)="confirmDetails()">Confirm</button>
+				</div>
+				<div class="col-md-6 text-right">
+					<button type="button" class="btn btn-danger" (click)="confirmDetailsModalRef.dismiss('Decliend to confirm further')">Cancel</button>
+				</div>
+			</div>
+		</ng-template>
+	
+		<app-footer></app-footer>
+  	</div>
+</div>

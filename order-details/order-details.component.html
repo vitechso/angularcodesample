@@ -1,0 +1,192 @@
+<app-breadcrumb [title]="'Orders'" [breadcrumb]="'Orders'"></app-breadcrumb>
+<!-- section start -->
+<section class="section-b-space">
+    <div class="container">
+        <div class="row border-top">
+            <div class="col-lg-3 pl-0 border-right">
+                <div class="dashboard-left">
+                    <div class="block-content">
+                        <ul>
+                            <li class="pb-2 pt-2"><a href="javascript:void(0)" routerLink="/pages/dashboard">Account Info</a></li>
+                            <li class="active pb-2"><a href="javascript:void(0)" routerLink="/pages/orders">My Orders</a></li>
+                            <li class="pb-2"><a href="javascript:void(0)" routerLink="/pages/orders">Orders Details</a></li>
+                            <li class="pb-2"><a href="javascript:void(0)" routerLink="/pages/wishlist">My Wishlist</a></li>
+                            <li class="pb-2"><a href="javascript:void(0)" routerLink="/pages/profile">My Account</a></li>
+                            <li class="pb-2"><a href="javascript:void(0)" routerLink="/pages/change-password">Change Password</a></li>
+                            <li class="last"><a href="javascript:void(0)">Log Out</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-9">
+                <div class="dashboard-right pt-3">
+                    <div class="dashboard">
+                        <div class="ItemDetails-itemDetailsView">
+                            <div class="row">
+                            <div class="col-sm-12">
+                            <div class="ItemDetails-deliveryInfo">
+                               <div class="Panel-panel" style="padding-top: 24px;">
+                                  <div class="Panel-defaultPadding"><span class="Text-Text" style="margin-right: 8px; color: rgb(40, 44, 63); font-weight: 600; height: 21px; font-size: 18px;">Delivery Address</span></div>
+                                  <div class="Panel-defaultPadding">
+                                     <div *ngIf="orderDetails" class="Address-deliveryInfo">
+                                        <div class="Address-nameNumber">
+                                           <span class="Text-Text" style="margin-right: 8px;">{{orderDetails.shipping_json.Ship_to_Name}}</span>
+                                           <div class="Address-verticalDivider"></div>
+                                           <span class="Text-Text" style="margin-left: 8px;">{{orderDetails.Customer_Mobile_No}}</span>
+                                        </div>
+                                        <span  class="Text-Text" style="padding-top: 6px; line-height: 1.5; color: rgb(105, 110, 121);">{{orderDetails.shipping_json.Ship_to_Address}} {{orderDetails.shipping_json.Ship_to_Address_2}}, {{orderDetails.shipping_json.Ship_to_City}}</span>
+                                     </div>
+                                  </div>
+                               </div>
+                            </div>
+
+                            
+
+                              <div class="ItemDetails-price" style="margin-bottom: 10px;">
+                                 <div class="PriceDetails-price" style="position: static; margin-top: 1px;">
+                                    <div class="tracking">
+                                       <div class="title">Tracking Order</div>
+                                    </div>
+                                       <!-- <div class="progress-track">
+                                             <ul id="progressbar">
+                                                <li class="step0 " [ngClass]="(ordered)?'active':''" id="step1">Ordered {{(ordered)?orderDate:''}}</li>
+                                                <li class="step0 text-center"  [ngClass]="(orderPacked)?'active':''"  id="step2">Packed {{(orderPacked)?orderPackedDate:''}}</li>
+                                                <li class="step0 text-right" [ngClass]="(orderShipped)?'active':''" id="step3">On the way {{(orderShipped)?orderShippedDate:''}}</li>
+                                                <li class="step0 text-right" [ngClass]="(delivered)?'active':''"  id="step4">Delivered {{(delivered)?deliveredDate:''}}</li>
+                                             </ul>
+                                       </div> -->
+                                       <div class="wrapper">
+                                        <ul class="StepProgress">
+                                          <li *ngFor="let item of statusDetails" class="StepProgress-item is-done" ><strong>{{item.status}}</strong> {{item.date|date:'EEEE, MMMM d, y h:mm:ss a'}}<br/>
+                                            <a *ngIf="item.description!=null && item.description!=''" target="_blank" [href]="item.description">{{item.description}}</a>
+                                          </li>
+                                          <!-- <li class="StepProgress-item"  [ngClass]="(ordered)?'is-done':''" ><strong>Ordered</strong> {{(ordered)?(orderDate|date:'EEEE, MMMM d, y h:mm:ss a'):''}}<br/>
+                                            <a *ngIf="orderedDescription!=null && orderedDescription!=''" target="_blank" [href]="orderedDescription">{{orderedDescription}}</a>
+                                          </li>
+                                          <li class="StepProgress-item"  [ngClass]="(orderPacked)?'is-done':''"><strong>Packed</strong> 
+                                            {{(orderPacked)?(orderPackedDate|date:'EEEE, MMMM d, y h:mm:ss a'):''}}
+                                            <br/>
+                                            <a *ngIf="orderPackedDescription!=null && orderPackedDescription!=''" target="_blank" [href]="orderPackedDescription">{{orderPackedDescription}}</a>
+                                          </li>
+                                          <li class="StepProgress-item" [ngClass]="(orderShipped)?'is-done':''" ><strong>On the way</strong> {{(orderShipped)?(orderShippedDate|date:'EEEE, MMMM d, y h:mm:ss a'):''}}
+                                           <br/>
+                                           <a *ngIf="orderShippedDescription!=null && orderShippedDescription!=''" target="_blank" [href]="orderShippedDescription">{{orderShippedDescription}}</a>
+                                          </li>
+                                          <li class="StepProgress-item" [ngClass]="(delivered)?'is-done':''" ><strong>Delivered</strong> {{(delivered)?(deliveredDate|date:'EEEE, MMMM d, y h:mm:ss a'):''}}
+                                            <br/>
+                                            <a *ngIf="deliveredDescription!=null && deliveredDescription!=''" target="_blank" [href]="deliveredDescription">{{deliveredDescription}}</a>
+                                            {{(delivered)?((deliveredDescription!=null && deliveredDescription!='')?deliveredDescription:''):''}}
+                                          </li> -->
+                                          <!-- <li class="StepProgress-item"><strong>Provide feedback</strong></li> -->
+                                        </ul>
+                                        </div>
+                                 </div>
+                              </div>
+
+                            <div class="ItemDetails-price">
+                               <div class="PriceDetails-price" style="position: static; margin-top: 1px;">
+                                  <div class="PriceDetails-itemPrice">
+                                     <span class="Text-Text" style="position: absolute; left: 6.44%; font-size: 16px; margin-top: 0px;">Total Order Price</span>
+                                     <div *ngIf="orderDetails" class="PriceDetails-finalPrice"><span class="PriceDetails-rupee">₹</span><span class="PriceDetails-amount">{{orderDetails.Payable_Amount}}</span></div>
+                                  </div>
+                               </div>
+                            </div>
+                            <div class="Panel-panel" style="padding-top: 19px;">
+                               <div class="Panel-defaultPadding"><span class="Text-Text" style="margin-right: 8px; color: rgb(40, 44, 63); font-weight: 600; height: 21px; font-size: 18px;">Updates sent to</span></div>
+                               <div class="Panel-defaultPadding">
+                                  <div *ngIf="orderDetails" class="Update-update">
+                                     <div  class="Update-mobile"><span class="svgImages-svg svgImages-call " style="width: 20px; height: 20px;"><i class="fa fa-phone"></i></span><span class="Text-Text" style="margin-left: 7px; color: rgb(105, 110, 121);">{{orderDetails.Customer_Mobile_No}}</span></div>
+                                     <div class="Update-email"><span class="svgImages-svg svgImages-email " style="width: 20px; height: 20px;"><i class="fa fa-envelope-o" aria-hidden="true"></i></span><span class="Text-Text" style="margin-left: 7px; padding-bottom: 4px; color: rgb(105, 110, 121);">{{orderDetails.Customer_Email}}</span></div>
+                                  </div>
+                               </div>
+                            </div>
+                            <span  *ngIf="orderDetails" class="Text-Text" style="display: block; width: -webkit-fill-available; font-size: 14px; background-color: white; margin-left: 10px; margin-right: 10px; margin-top: 12px; margin-bottom: 10px; padding: 19px 4.44%; color: rgb(105, 110, 121);">Order ID # {{orderDetails.No}} </span>
+                         </div>
+                         </div>
+                         <ng-container *ngIf="orderDetails">
+                          <div *ngFor="let item of orderDetails.SalesLineBuffer_json" class="looping_div ootons">
+                            <div class="row align-items-center">
+                              <div class="col-sm-2 col">
+                                <div class="img_pros">
+                                  <img [routerLink]="['/shop/product/',item.product_detail.parentItemSlug]"  [src]="'https://pakizaonline.nyc3.digitaloceanspaces.com/'+item.product_detail.itemvariant[0].imageUrl.image1" class="imgResponsiveNew" style="border-radius: 2px; width: 100%;">
+                                </div>
+                              </div>
+                              <div class="col-sm-3 col">
+                                <div class="details">
+                                  <p  [routerLink]="['/shop/product/',item.product_detail.parentItemSlug]" class="name_pr">{{item.product_detail.itemTitle}}</p>
+                                  <!-- <p>Size: XXL</p> -->
+                                </div>
+                              </div>
+                              <div class="col-sm-3 col">
+                                <div class="price_tag">
+                                  <p class="pricsd">Rs {{item.Unit_Price}}</p>
+                                </div>
+                              </div>
+                              <div class="col-sm-4 col-12">
+                                <div class="details_addes">
+                                  <p>Order Booking Date {{orderDetails.Order_Booking_Date|date}}</p>
+                                  <p *ngIf="returnedProducts.indexOf(item.Variant_Code) == -1">Your Item has been Booked</p>
+                                  <p *ngIf="returnedProducts.indexOf(item.Variant_Code) > -1">Return Initiated</p>
+                                </div>
+                                <div>
+                                  <button *ngIf="returnedProducts.indexOf(item.Variant_Code) == -1" (click)="returnProduct(item)">Return</button>
+                                  
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                         </ng-container>
+                         
+
+                         <!-- <div class="looping_div ootons">
+                           <div class="row">
+                             <div class="col-sm-2">
+                               <div class="img_pros">
+                                 <img src="https://pakizaonline.nyc3.digitaloceanspaces.com/P02275510LA0415_0.jpg" class="imgResponsiveNew" style="border-radius: 2px; width: 100%;">
+                               </div>
+                             </div>
+                             <div class="col-sm-3">
+                               <div class="details">
+                                 <p class="name_pr">Ahika</p>
+                                 <p>Size: XXL</p>
+                               </div>
+                             </div>
+                             <div class="col-sm-3">
+                               <div class="price_tag">
+                                 <p class="pricsd">Rs 595</p>
+                               </div>
+                             </div>
+                             <div class="col-sm-4">
+                               <div class="details_addes">
+                                 <p>Order Booking Date Sep 25,2020</p>
+                                 <p>Your Item has been Booked</p>
+                               </div>
+                             </div>
+                           </div>
+                         </div> -->
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--section end-->
+<!-- <ng-template #mymodal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Confirm Banking Details</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p><b>Account Number</b> : {{bankingDetails.bank_account_no}}</p>
+    <p><b>Account Holder</b> : {{bankingDetails.account_holder}}</p>
+    <p>Bank Name : {{bankingDetails.bank_name}}</p>
+    <p>IFSC Code : {{bankingDetails.ifsc_code}}</p>
+    <p>Account Type : {{bankingDetails.account_type}}</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Confirm</button>
+  </div>
+</ng-template> -->

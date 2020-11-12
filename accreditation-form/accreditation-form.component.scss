@@ -1,0 +1,133 @@
+@import "~src/styles/variables";
+@import "~src/styles/growforms";
+.cardBackground{
+	background-color: transparent;
+}
+.form-step.hide{
+	opacity: 0;
+    visibility: hidden;
+    height:0;
+    display: none;
+}
+.form-step{
+	height:auto;
+	transition-property: all;
+    transition-duration: 0.2s;
+    transition-timing-function: linear;
+    transition-delay: 0s;
+    opacity: 1;
+    visibility: visible;
+    display: block;
+}
+.login-page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
+    text-align: center;
+    color: #fff;
+	padding: 3em;
+}
+.accreditation-container{
+	.page-header{
+		// background: #222;
+		padding: 0.5em 4em;
+    	margin: 0em auto;
+
+		.logo h1{
+			color: #fff;
+		}
+	}
+	.form-body{
+		padding: 1em 0;
+	}
+	.form-header{
+		color: #fff;
+		background: $grow-green;
+		padding: 1em 0;
+
+		h1{
+			font-weight: 700;
+		}
+	}
+	.form-section-head{
+		background-repeat: repeat-x;
+	    border-color: rgb(51,51,51);
+	    border-width: 1px;
+	    border-style: none none solid none;
+	}
+	.form-section-head span{
+		border-bottom: 1px solid #222;
+	    width: 100%;
+	    height: 2px;
+	    display: block;
+	}
+	.control-container{
+		margin: 2em 0;
+		// display: grid;
+	}
+	.control-group-heading{
+		margin: 1rem 0;
+    	font-size: 16px;
+	}
+	.section-heading{
+		margin-top: 20px;
+	}
+
+	@media only screen and (max-width: 412px) {
+		.logo{
+			text-align: center;
+			align-items: center;
+		}
+	}
+}
+
+// img.uploaded-driver-licence{
+// 	width: calc(100vw - 100px);
+// 	height: 100%;
+// }
+
+.uploaded-driver-licence{
+	height: 200px;
+	width: auto;
+}
+
+.btn-outline-primary.text-grow{
+	border-color: $light-green;
+}
+.btn-outline-primary.text-grow:not([disabled]):not(.disabled):active,
+.btn-outline-primary.text-grow:not([disabled]):not(.disabled).active,
+.show > .btn-outline-primary.text-grow.dropdown-toggle,
+.btn-outline-primary.text-grow:hover
+{
+	background-color: $light-green;
+	border-color: $light-green;
+}
+
+
+.input-group div.alert, .input-group div.alert{
+	padding: 0;
+	margin: 0;
+}
+::ng-deep .ng-has-value .ng-placeholder{
+	display: none;
+}
+
+@media only screen and (max-width: 1025px) and (min-width: 768px){
+	// ng-select,
+	// select,
+	// input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]){
+	// 	// min-width: 419px;
+	// }
+}
+
+::ng-deep .ng-select.ng-select-focused.ng-select-edit-focused .ng-value-label {
+  color: transparent;
+}
+
+select:focus, input:focus{
+    border-color: $light-green;
+    outline:none;
+}
